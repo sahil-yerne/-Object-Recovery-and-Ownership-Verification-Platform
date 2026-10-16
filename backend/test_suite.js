@@ -68,6 +68,7 @@ async function runTests() {
     let finderUserId = null;
     let claimantToken = "";
     let claimantUserId = null;
+    let adminToken = "";
     let testItemId = null;
     let testClaimId = null;
     let testHandoverOtp = null;
@@ -119,6 +120,17 @@ async function runTests() {
         });
         assert(loginClaimant.status === 200 && loginClaimant.data.token, "Claimant login succeeds with JWT");
         claimantToken = loginClaimant.data.token;
+
+        // Login Master Admin
+        const loginAdmin = await request("/api/auth/login", {
+            method: "POST",
+            body: {
+                email: "lostfound@admin.com",
+                password: "lostfound@123456"
+            }
+        });
+        assert(loginAdmin.status === 200 && loginAdmin.data.token, "Master Admin login succeeds with JWT");
+        adminToken = loginAdmin.data.token;
 
         // 2. Report Found Item with userId & Secret Question
         console.log("\n--- 2. Item Ingestion with Privacy & Quiz ---");
@@ -296,22 +308,28 @@ async function runTests() {
 
         // 14. Test Admin Moderation & Ban Control
         console.log("\n--- 14. Admin Moderation & Ban Management ---");
-        const adminUsersRes = await request("/api/admin/users");
+        const adminUsersRes = await request("/api/admin/users", {
+            headers: { "Authorization": `Bearer ${adminToken}` }
+        });
         assert(adminUsersRes.status === 200 && Array.isArray(adminUsersRes.data.data), "Admin fetched all user accounts");
 
         const banToggleRes = await request(`/api/admin/users/${claimantUserId}/ban`, {
-            method: "PUT"
+            method: "PUT",
+            headers: { "Authorization": `Bearer ${adminToken}` }
         });
         assert(banToggleRes.status === 200 && banToggleRes.data.success, "Admin successfully toggled user ban status");
 
         const unbanToggleRes = await request(`/api/admin/users/${claimantUserId}/ban`, {
-            method: "PUT"
+            method: "PUT",
+            headers: { "Authorization": `Bearer ${adminToken}` }
         });
         assert(unbanToggleRes.status === 200 && unbanToggleRes.data.isBanned === false, "Admin successfully unbanned user");
 
         // 15. Test Admin Claims & Dispute Resolution
         console.log("\n--- 15. Admin Claims & Dispute Moderation ---");
-        const adminClaimsRes = await request("/api/admin/claims");
+        const adminClaimsRes = await request("/api/admin/claims", {
+            headers: { "Authorization": `Bearer ${adminToken}` }
+        });
         assert(adminClaimsRes.status === 200 && Array.isArray(adminClaimsRes.data.data), "Admin fetched claims list for moderation");
 
         // 16. Test Reporting Gamification Points
@@ -529,10 +547,14 @@ async function runTests() {
 
         // 28. Test Audit Trail & Fraud Risk Moderation
         console.log("\n--- 28. Immutable Audit Trail & Fraud Intelligence ---");
-        const auditRes = await request("/api/admin/audit-logs");
+        const auditRes = await request("/api/admin/audit-logs", {
+            headers: { "Authorization": `Bearer ${adminToken}` }
+        });
         assert(auditRes.status === 200 && Array.isArray(auditRes.data.data), "Admin retrieved immutable audit log stream");
 
-        const fraudRes = await request("/api/admin/fraud-alerts");
+        const fraudRes = await request("/api/admin/fraud-alerts", {
+            headers: { "Authorization": `Bearer ${adminToken}` }
+        });
         assert(fraudRes.status === 200 && Array.isArray(fraudRes.data.data), "Admin retrieved fraud risk intelligence alerts");
 
         console.log("\n=================================================");

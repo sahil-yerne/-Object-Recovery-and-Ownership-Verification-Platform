@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Retrieve current user from auth storage if available
     let currentUserId = 1;
     try {
-        const storedUser = localStorage.getItem("user");
+        const storedUser = localStorage.getItem("auth_user") || localStorage.getItem("user");
         if (storedUser) {
             const parsed = JSON.parse(storedUser);
-            if (parsed.id) currentUserId = parsed.id;
+            if (parsed.id || parsed.userId) currentUserId = parsed.id || parsed.userId;
         }
     } catch (e) {}
 

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Helper for Auth headers
     function getAuthHeaders() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("auth_token") || localStorage.getItem("token");
         return token ? { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } : { "Content-Type": "application/json" };
     }
 
