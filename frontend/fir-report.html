@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Official Lost Property FIR Declaration | Verification Dispatch</title>
+    <meta name="description" content="Official tamper-evident police and institutional lost property declaration document.">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Courier+Prime:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #1e293b;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .document-wrapper {
+            max-width: 820px;
+            margin: 2rem auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            padding: 3rem;
+            position: relative;
+            color: #0f172a;
+        }
+
+        .doc-header-title {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1.5px;
+            font-size: 1.35rem;
+            text-transform: uppercase;
+        }
+
+        .doc-mono {
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .official-seal {
+            border: 2px solid #0f172a;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #0f172a;
+        }
+
+        .hash-box {
+            background: #f1f5f9;
+            border: 1px dashed #94a3b8;
+            border-radius: 6px;
+            padding: 0.6rem 0.8rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.8rem;
+            word-break: break-all;
+            color: #334155;
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-35deg);
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(15, 23, 42, 0.04);
+            letter-spacing: 15px;
+            pointer-events: none;
+            user-select: none;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .doc-table th {
+            background: #f8fafc;
+            width: 32%;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: #475569;
+            border-color: #cbd5e1;
+        }
+
+        .doc-table td {
+            font-size: 0.95rem;
+            border-color: #cbd5e1;
+        }
+
+        @media print {
+            body {
+                background: #ffffff !important;
+                padding: 0 !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .document-wrapper {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 1.5rem !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP CONTROL BAR -->
+    <div class="container py-3 no-print">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="javascript:history.back()" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Return to Item
+            </a>
+            <div class="d-flex gap-2">
+                <button class="btn btn-info btn-sm fw-bold" onclick="window.print()">
+                    <i class="bi bi-printer-fill me-1"></i> Print / Save as PDF
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRINTABLE OFFICIAL DECLARATION -->
+    <div class="document-wrapper shadow">
+        <div class="watermark">AUTHENTIC FIR</div>
+
+        <!-- DOCUMENT HEADER -->
+        <div class="border-bottom border-dark pb-3 mb-4">
+            <div class="row align-items-center">
+                <div class="col-2 text-center">
+                    <div class="official-seal">
+                        <i class="bi bi-shield-shaded"></i>
+                    </div>
+                </div>
+                <div class="col-8 text-center">
+                    <h5 class="doc-header-title fw-bold mb-1">Central Lost Property Verification Dispatch</h5>
+                    <div class="small fw-semibold text-secondary">DEPARTMENT OF PUBLIC SAFETY &amp; CAMPUS LOGISTICS</div>
+                    <div class="small text-muted">Electronic First Information Report (e-FIR Declaration Record)</div>
+                </div>
+                <div class="col-2 text-center" id="qrContainer">
+                    <img id="qrCodeImg" src="" alt="Verification QR" style="width: 80px; height: 80px; display: none;">
+                </div>
+            </div>
+        </div>
+
+        <!-- CASE METADATA BAR -->
+        <div class="row g-2 mb-4 bg-light p-3 rounded border border-secondary border-opacity-25">
+            <div class="col-md-4">
+                <span class="small text-muted d-block text-uppercase">FIR Record #</span>
+                <span class="fw-bold fs-6 doc-mono text-primary" id="dispFirNumber">FIR-2026-POL-XXXXXX</span>
+            </div>
+            <div class="col-md-4">
+                <span class="small text-muted d-block text-uppercase">Authority Jurisdiction</span>
+                <span class="fw-bold fs-6" id="dispAuthority">POLICE_DEPARTMENT</span>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <span class="small text-muted d-block text-uppercase">Filing Timestamp</span>
+                <span class="fw-semibold small" id="dispDate">-</span>
+            </div>
+        </div>
+
+        <!-- 1. DECLARANT INFORMATION -->
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-3 text-secondary">1. Declarant / Complainant Identity</h6>
+        <table class="table table-bordered doc-table mb-4">
+            <tbody>
+                <tr>
+                    <th>Complainant Name</th>
+                    <td id="dispDeclarantName">-</td>
+                </tr>
+                <tr>
+                    <th>Registered Mobile</th>
+                    <td id="dispDeclarantPhone" class="doc-mono">-</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td id="dispDeclarantEmail">-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 2. LOST PROPERTY SPECIFICATIONS -->
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-3 text-secondary">2. Missing Property Specifications</h6>
+        <table class="table table-bordered doc-table mb-4">
+            <tbody>
+                <tr>
+                    <th>Item Description</th>
+                    <td class="fw-bold" id="dispItemName">-</td>
+                </tr>
+                <tr>
+                    <th>Category</th>
+                    <td id="dispCategory">-</td>
+                </tr>
+                <tr>
+                    <th>Brand &amp; Dominant Color</th>
+                    <td id="dispBrandColor">-</td>
+                </tr>
+                <tr>
+                    <th>Date &amp; Place Lost</th>
+                    <td id="dispPlaceDate">-</td>
+                </tr>
+                <tr>
+                    <th>Geospatial Location</th>
+                    <td class="doc-mono small" id="dispCoordinates">-</td>
+                </tr>
+                <tr>
+                    <th>Hardware Serial Number</th>
+                    <td class="doc-mono fw-bold text-danger" id="dispSerial">Not Registered in Vault</td>
+                </tr>
+                <tr>
+                    <th>Purchase Invoice #</th>
+                    <td class="doc-mono" id="dispInvoice">Not Registered in Vault</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- 3. INCIDENT SYNOPSIS -->
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2 text-secondary">3. Incident Circumstances</h6>
+        <div class="p-3 bg-light rounded border mb-4 small" id="dispDescription">
+            Complainant reported the item as lost under non-suspicious circumstances.
+        </div>
+
+        <!-- 4. CRYPTOGRAPHIC VERIFICATION SEAL -->
+        <h6 class="fw-bold text-uppercase border-bottom pb-1 mb-2 text-secondary">4. Digital Authenticity Seal &amp; Cryptographic Hash</h6>
+        <div class="hash-box mb-4">
+            <span class="fw-bold text-dark d-block mb-1">SHA-256 Tamper-Proof Audit Signature:</span>
+            <span id="dispHash">Generating verification digest...</span>
+        </div>
+
+        <!-- SIGNATURES & STAMPS -->
+        <div class="row pt-4 mt-4 border-top border-secondary border-opacity-50">
+            <div class="col-6 text-center">
+                <div class="border-top border-dark mx-auto pt-2" style="width: 200px;">
+                    <small class="fw-bold text-uppercase d-block">Complainant Signature</small>
+                    <small class="text-muted">(Electronically Acknowledged)</small>
+                </div>
+            </div>
+            <div class="col-6 text-center">
+                <div class="border-top border-dark mx-auto pt-2" style="width: 200px;">
+                    <small class="fw-bold text-uppercase d-block">Authorized Registry Officer</small>
+                    <small class="text-success"><i class="bi bi-patch-check-fill me-1"></i> Digitally Signed &amp; Stamped</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4 pt-3 border-top small text-muted" style="font-size: 0.75rem;">
+            Notice: This document is an official digital declaration issued through the Object Recovery and Ownership Verification Platform. Scanning the QR code validates its registration in real-time. False declarations are punishable under relevant state laws.
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const itemId = urlParams.get("itemId");
+            const firNum = urlParams.get("fir");
+            const token = localStorage.getItem("auth_token");
+
+            if (!itemId && !firNum) {
+                alert("Missing Item ID or FIR number.");
+                return;
+            }
+
+            // If we have an existing FIR number, verify it publicly
+            if (firNum) {
+                try {
+                    const res = await fetch(`/api/fir/verify/${firNum}`);
+                    const json = await res.json();
+                    if (!res.ok) throw new Error(json.message);
+                    const d = json.data;
+                    document.getElementById("dispFirNumber").textContent = d.firNumber;
+                    document.getElementById("dispAuthority").textContent = d.authorityType;
+                    document.getElementById("dispDate").textContent = new Date(d.filedAt).toLocaleString();
+                    document.getElementById("dispDeclarantName").textContent = d.declarantName;
+                    document.getElementById("dispItemName").textContent = d.itemName;
+                    document.getElementById("dispCategory").textContent = d.category;
+                    document.getElementById("dispBrandColor").textContent = d.brand || "N/A";
+                    document.getElementById("dispPlaceDate").textContent = d.location;
+                    document.getElementById("dispHash").textContent = d.verificationHash;
+                } catch (e) {
+                    alert("Error loading FIR declaration: " + e.message);
+                }
+                return;
+            }
+
+            // Otherwise, generate a fresh FIR for this item using the user's authentication
+            if (itemId) {
+                try {
+                    const res = await fetch("/api/fir/generate", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                            itemId: parseInt(itemId),
+                            authorityType: "POLICE_DEPARTMENT"
+                        })
+                    });
+
+                    const json = await res.json();
+                    if (!res.ok) throw new Error(json.message || "Failed to generate FIR declaration.");
+
+                    const d = json.declaration;
+                    document.getElementById("dispFirNumber").textContent = d.firNumber;
+                    document.getElementById("dispAuthority").textContent = d.authority;
+                    document.getElementById("dispDate").textContent = new Date(d.filedAt).toLocaleString();
+                    document.getElementById("dispDeclarantName").textContent = d.declarant.name;
+                    document.getElementById("dispDeclarantPhone").textContent = d.declarant.phone;
+                    document.getElementById("dispDeclarantEmail").textContent = d.declarant.email || "N/A";
+
+                    document.getElementById("dispItemName").textContent = d.item.name;
+                    document.getElementById("dispCategory").textContent = d.item.category;
+                    document.getElementById("dispBrandColor").textContent = `${d.item.brand || 'Unspecified'} | ${d.item.color || 'Unspecified'}`;
+                    document.getElementById("dispPlaceDate").textContent = `${d.item.location} (Lost: ${new Date(d.item.dateLost).toLocaleDateString()})`;
+                    document.getElementById("dispCoordinates").textContent = d.item.coordinates;
+                    document.getElementById("dispSerial").textContent = d.item.serialNumber;
+                    document.getElementById("dispInvoice").textContent = d.item.invoiceNumber;
+                    document.getElementById("dispDescription").textContent = d.item.description || "Reported lost property.";
+                    document.getElementById("dispHash").textContent = d.verificationHash;
+
+                    if (d.qrSealDataUrl) {
+                        const img = document.getElementById("qrCodeImg");
+                        img.src = d.qrSealDataUrl;
+                        img.style.display = "block";
+                    }
+
+                } catch (err) {
+                    alert("Unable to generate FIR declaration: " + err.message);
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+/* ================= FORM CONTAINER ================= */
+
+form {
+    width: 100%;
+}
+
+/* Form card enhancement */
+
+[data-theme="dark"] .card {
+    border-radius: 0px;
+    background: #0d0f18 !important;
+    border: 1px solid #334155;
+    border-top: 3px solid #00f3ff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* Section headings inside forms */
+
+[data-theme="dark"] form h3,
+[data-theme="dark"] form h4 {
+    font-weight: 800;
+    color: #00f3ff !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* ================= FORM LABELS ================= */
+
+[data-theme="dark"] .form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #e0e6ed !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+/* ================= INPUT FIELDS ================= */
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    border: 1px solid #334155;
+    border-bottom: 2px solid #00f3ff;
+    background-color: #05050a;
+    color: #00f3ff;
+    transition: all 0.3s ease;
+    font-family: 'Rajdhani', monospace;
+    font-size: 16px;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: #94a3b8;
+}
+
+[data-theme="dark"] .form-select option {
+    background-color: #0d0f18 !important;
+    color: #e0e6ed !important;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    border-color: #ff003c;
+    border-bottom: 2px solid #ff003c;
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.2) inset;
+    background-color: #0d0f18;
+    color: #ff003c;
+}
+
+/* Textarea */
+
+[data-theme="dark"] textarea.form-control {
+    resize: vertical;
+}
+
+/* ================= IMAGE UPLOAD ================= */
+
+[data-theme="dark"] input[type="file"] {
+    padding: 10px;
+    color: #00f3ff;
+    background: #05050a;
+    border: 1px dashed #00f3ff;
+}
+
+[data-theme="dark"] input[type="file"]:focus {
+    border-color: #ff003c;
+}
+
+/* Image preview box */
+
+[data-theme="dark"] #imagePreview {
+    border-radius: 0px;
+    object-fit: cover;
+    background: #05050a;
+    border: 2px solid #334155;
+    padding: 4px;
+}
+
+/* ================= BUTTONS ================= */
+
+[data-theme="dark"] button.btn {
+    border-radius: 0px;
+    padding: 12px 30px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ================= ALERT BOX ================= */
+
+[data-theme="dark"] .alert {
+    border-radius: 0px;
+    padding: 15px 20px;
+    background-color: rgba(13, 15, 24, 0.9);
+    border: 1px solid #00f3ff;
+    border-left: 4px solid #00f3ff;
+    color: #00f3ff;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+}
+
+[data-theme="dark"] .alert-danger {
+    border-color: #ff003c;
+    border-left-color: #ff003c;
+    color: #ff003c;
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+}
+
+[data-theme="dark"] .alert-success {
+    border-color: #39ff14;
+    border-left-color: #39ff14;
+    color: #39ff14;
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+}
+
+/* ================= FORM SECTIONS ================= */
+
+[data-theme="dark"] hr {
+    margin: 30px 0;
+    opacity: 0.5;
+    border-color: #334155;
+    border-style: dashed;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    button.btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .ms-2 {
+        margin-left: 0 !important;
+    }
+}
+
+/* ============================================================
+   LOCATION MAP PICKER
+   ============================================================ */
+
+/* Container around the map section */
+[data-theme="dark"] .location-picker-section {
+    margin-top: 10px;
+    border: 1px solid #334155;
+    border-left: 3px solid #00f3ff;
+    background: #05050a;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+/* Toggle button row */
+[data-theme="dark"] .lp-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #0d0f18;
+    border-bottom: 1px solid #1e293b;
+    flex-wrap: wrap;
+}
+
+/* Toggle map button */
+[data-theme="dark"] #toggleMapBtn {
+    background: transparent;
+    border: 1px solid #00f3ff;
+    color: #00f3ff;
+    padding: 6px 16px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    cursor: pointer;
+}
+[data-theme="dark"] #toggleMapBtn:hover {
+    background: #00f3ff;
+    color: #000;
+}
+
+/* GPS button */
+[data-theme="dark"] #gpsLocationBtn {
+    background: transparent;
+    border: 1px solid #39ff14;
+    color: #39ff14;
+    padding: 6px 16px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    cursor: pointer;
+}
+[data-theme="dark"] #gpsLocationBtn:hover {
+    background: #39ff14;
+    color: #000;
+}
+[data-theme="dark"] #gpsLocationBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Coordinates badge */
+[data-theme="dark"] #coordsDisplay {
+    font-size: 12px;
+    color: #00f3ff;
+    background: rgba(0, 243, 255, 0.08);
+    border: 1px solid rgba(0, 243, 255, 0.2);
+    padding: 4px 10px;
+    letter-spacing: 0.5px;
+    font-family: monospace;
+    border-radius: 0;
+}
+
+/* Address search row */
+[data-theme="dark"] .lp-search-row {
+    padding: 10px 14px;
+    background: #0d0f18;
+    border-bottom: 1px solid #1e293b;
+    position: relative;
+}
+[data-theme="dark"] .lp-search-row input {
+    background: #05050a !important;
+    border: 1px solid #334155 !important;
+    border-bottom: 2px solid #00f3ff !important;
+    color: #00f3ff !important;
+    font-size: 14px;
+    border-radius: 0 !important;
+    padding: 8px 12px;
+    width: 100%;
+    transition: border-color 0.2s;
+}
+[data-theme="dark"] .lp-search-row input:focus {
+    outline: none;
+    border-color: #ff003c !important;
+    border-bottom-color: #ff003c !important;
+}
+
+/* Search autocomplete dropdown */
+[data-theme="dark"] #mapSearchResults {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: calc(100% - 10px);
+    background: #0d0f18;
+    border: 1px solid #00f3ff;
+    z-index: 9999;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: 0 8px 30px rgba(0, 243, 255, 0.15);
+}
+[data-theme="dark"] .lp-search-item {
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #94a3b8;
+    cursor: pointer;
+    border-bottom: 1px solid #1e293b;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1.4;
+}
+[data-theme="dark"] .lp-search-item:hover {
+    background: rgba(0, 243, 255, 0.08);
+    color: #00f3ff;
+}
+[data-theme="dark"] .lp-search-item:last-child { border-bottom: none; }
+
+/* The actual map canvas */
+[data-theme="dark"] #locationPickerMap {
+    height: 320px;
+    width: 100%;
+    background: #05050a;
+    z-index: 1;
+}
+
+/* Custom neon pin marker */
+[data-theme="dark"] .lp-pin-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    color: #ff003c;
+    filter: drop-shadow(0 0 8px #ff003c) drop-shadow(0 0 2px #fff);
+    animation: lp-pulse 1.5s infinite alternate;
+}
+@keyframes lp-pulse {
+    from { filter: drop-shadow(0 0 6px #ff003c); }
+    to   { filter: drop-shadow(0 0 18px #ff003c) drop-shadow(0 0 4px #fff); }
+}
+
+/* Leaflet override for dark theme */
+[data-theme="dark"] .leaflet-control-zoom a {
+    background: #0d0f18 !important;
+    color: #00f3ff !important;
+    border: 1px solid #334155 !important;
+}
+[data-theme="dark"] .leaflet-control-zoom a:hover {
+    background: #00f3ff !important;
+    color: #000 !important;
+}
+
+/* Hint text under map */
+[data-theme="dark"] .lp-hint {
+    font-size: 11px;
+    color: #475569;
+    padding: 6px 14px;
+    background: #0d0f18;
+    border-top: 1px solid #1e293b;
+    letter-spacing: 0.5px;
+}
+
+/* Loading badge */
+[data-theme="dark"] #locationLoadingBadge {
+    font-size: 11px;
+    color: #00f3ff;
+    letter-spacing: 1px;
+    animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ================= BASIC THEME OVERRIDES (FORMS) ================= */
+
+[data-theme="basic"] body {
+    background-color: #f8fafc !important;
+}
+
+[data-theme="basic"] .card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-top: 3px solid #2563eb !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="basic"] form h3,
+[data-theme="basic"] form h4 {
+    color: #1e40af !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+[data-theme="basic"] .form-label {
+    color: #334155 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="basic"] .form-control,
+[data-theme="basic"] .form-select {
+    border: 1px solid #cbd5e1 !important;
+    border-bottom: 2px solid #2563eb !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    font-family: inherit !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="basic"] .form-control:focus,
+[data-theme="basic"] .form-select:focus {
+    border-color: #2563eb !important;
+    border-bottom: 2px solid #2563eb !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+}
+
+[data-theme="basic"] textarea.form-control {
+    color: #1e293b !important;
+}
+
+[data-theme="basic"] .form-select option {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+}
+
+[data-theme="basic"] button.btn {
+    border-radius: 8px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="basic"] .alert {
+    border-radius: 8px !important;
+    border-left: 4px solid #2563eb !important;
+    border-color: #bfdbfe !important;
+    background-color: #eff6ff !important;
+    color: #1e40af !important;
+    box-shadow: none !important;
+}
+
+[data-theme="basic"] .alert-danger {
+    border-left-color: #dc2626 !important;
+    border-color: #fecaca !important;
+    background-color: #fef2f2 !important;
+    color: #991b1b !important;
+    box-shadow: none !important;
+}
+
+[data-theme="basic"] .alert-success {
+    border-left-color: #16a34a !important;
+    border-color: #bbf7d0 !important;
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+    box-shadow: none !important;
+}
+
+[data-theme="basic"] hr {
+    border-color: #e2e8f0 !important;
+    border-style: solid !important;
+    opacity: 1 !important;
+}
+
+[data-theme="basic"] input[type="file"] {
+    color: #334155 !important;
+    background: #f8fafc !important;
+    border: 1px dashed #2563eb !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="basic"] #imagePreview {
+    background: #f8fafc !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+}
+
+/* Location picker overrides */
+[data-theme="basic"] .location-picker-section {
+    border: 1px solid #e2e8f0 !important;
+    border-left: 3px solid #2563eb !important;
+    background: #f8fafc !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="basic"] .lp-toggle-row {
+    background: #f1f5f9 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="basic"] #toggleMapBtn {
+    background: transparent !important;
+    border: 1px solid #2563eb !important;
+    color: #2563eb !important;
+    border-radius: 6px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="basic"] #toggleMapBtn:hover {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+[data-theme="basic"] #gpsLocationBtn {
+    background: transparent !important;
+    border: 1px solid #16a34a !important;
+    color: #16a34a !important;
+    border-radius: 6px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    font-weight: 600 !important;
+}
+
+[data-theme="basic"] #gpsLocationBtn:hover {
+    background: #16a34a !important;
+    color: #ffffff !important;
+}
+
+[data-theme="basic"] #coordsDisplay {
+    color: #2563eb !important;
+    background: #eff6ff !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: 6px !important;
+    font-family: monospace !important;
+}
+
+[data-theme="basic"] .lp-search-row {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="basic"] .lp-search-row input {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-bottom: 2px solid #2563eb !important;
+    color: #1e293b !important;
+    border-radius: 6px !important;
+}
+
+[data-theme="basic"] .lp-search-row input:focus {
+    border-color: #2563eb !important;
+    border-bottom-color: #2563eb !important;
+}
+
+[data-theme="basic"] #mapSearchResults {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="basic"] .lp-search-item {
+    color: #475569 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+[data-theme="basic"] .lp-search-item:hover {
+    background: #eff6ff !important;
+    color: #2563eb !important;
+}
+
+[data-theme="basic"] #locationPickerMap {
+    background: #f1f5f9 !important;
+}
+
+[data-theme="basic"] .lp-pin-icon {
+    color: #2563eb !important;
+    filter: none !important;
+    animation: none !important;
+}
+
+[data-theme="basic"] .leaflet-control-zoom a {
+    background: #ffffff !important;
+    color: #1e293b !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+}
+
+[data-theme="basic"] .leaflet-control-zoom a:hover {
+    background: #f1f5f9 !important;
+    color: #2563eb !important;
+}
+
+[data-theme="basic"] .lp-hint {
+    background: #f8fafc !important;
+    border-top: 1px solid #e2e8f0 !important;
+    color: #64748b !important;
+    letter-spacing: 0 !important;
+}
+
+[data-theme="basic"] #locationLoadingBadge {
+    color: #2563eb !important;
+}

@@ -1,0 +1,772 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About | Lost & Found Portal</title>
+
+    <meta name="description" content="Learn more about the Lost & Found Portal.">
+
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts (Rajdhani) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <link rel="icon" href="assets/logo/favicon.png">
+
+    <!-- Theme Initialization -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('portal_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg  shadow sticky-top">
+
+        <div class="container">
+
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+
+                <img src="assets/logo/logo.png" alt="Logo" class="me-2 rounded-circle" style="height: 36px; width: 36px; object-fit: cover; background: white; padding: 2px;"> Lost & Found
+
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+
+<span class="navbar-toggler-icon"></span>
+
+</button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="index.html">
+
+                            <i class="bi bi-house-door-fill me-1"></i> Home
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="report-lost.html">
+
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Report Lost
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="report-found.html">
+
+                            <i class="bi bi-check-circle-fill me-1"></i> Report Found
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="search.html">
+
+                            <i class="bi bi-search me-1"></i> Search
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link active" href="about.html">
+
+                            <i class="bi bi-info-circle-fill me-1"></i> About
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="contact.html">
+
+                            <i class="bi bi-envelope-fill me-1"></i> Contact
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item dropdown ms-lg-3 my-1 my-lg-0">
+                        <button class="btn btn-sm btn-outline-info rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Change Theme">
+                            <i class="bi bi-moon-stars-fill text-info" id="themeIcon" style="font-size: 16px;"></i>
+                            <span id="themeLabel" class="d-none">Dark</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-1" aria-labelledby="themeDropdown" style="min-width: 150px;">
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3 active" type="button" data-theme-value="dark"><i class="bi bi-moon-stars-fill text-info"></i> Dark Cyberpunk</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="basic"><i class="bi bi-brightness-high-fill text-warning"></i> Basic Theme</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="midnight"><i class="bi bi-star-fill text-warning"></i> Midnight</button></li>
+                        </ul>
+                    </li></ul>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="page-banner banner-primary">
+
+        <div class="container text-center">
+
+            <h1>About Lost & Found Portal</h1>
+
+            <p class="lead">Helping people reconnect with their lost belongings quickly, securely and efficiently.</p>
+
+        </div>
+
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-6 text-center">
+                    <div class="glow-wrapper about-image-container">
+                        <img src="assets/images/about.png" class="img-fluid" alt="About">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h2 class="fw-bold mb-4">
+
+                        Who We Are
+
+                    </h2>
+
+                    <p>
+
+                        The Lost & Found Portal is a web platform that helps users report lost and found items in one centralized system.
+
+                    </p>
+
+                    <p>
+
+                        Instead of searching manually, users can upload item information, browse reports, and contact the rightful owner or finder.
+
+                    </p>
+
+                    <p>
+
+                        The portal is designed to reduce the time required to recover lost belongings while making the reporting process simple and user-friendly.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= MISSION & VISION ================= -->
+
+    <section class="py-5 bg-light">
+
+        <div class="container">
+
+            <div class="row g-4">
+
+                <div class="col-lg-6">
+
+                    <div class="card shadow-sm border-0 h-100">
+
+                        <div class="card-body p-4">
+
+                            <div class="mb-3">
+
+                                <i class="bi bi-bullseye display-4 text-primary"></i>
+
+                            </div>
+
+                            <h3 class="fw-bold">
+
+                                Our Mission
+
+                            </h3>
+
+                            <p class="mt-3">
+
+                                Our mission is to create a reliable platform where people can easily report lost and found items, making it easier to reconnect owners with their belongings.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <div class="card shadow-sm border-0 h-100">
+
+                        <div class="card-body p-4">
+
+                            <div class="mb-3">
+
+                                <i class="bi bi-eye-fill display-4 text-success"></i>
+
+                            </div>
+
+                            <h3 class="fw-bold">
+
+                                Our Vision
+
+                            </h3>
+
+                            <p class="mt-3">
+
+                                We aim to become a trusted digital platform for schools, colleges, offices and public places to manage lost and found items efficiently.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= WHY CHOOSE US ================= -->
+
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="fw-bold">
+
+                    Why Choose Us?
+
+                </h2>
+
+                <p class="text-muted">
+
+                    Making lost and found management easy.
+
+                </p>
+
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-lightning-charge-fill display-4 text-warning"></i>
+
+                            <h5 class="mt-3">
+
+                                Fast Reporting
+
+                            </h5>
+
+                            <p>
+
+                                Report lost or found items within minutes.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-search display-4 text-primary"></i>
+
+                            <h5 class="mt-3">
+
+                                Smart Search
+
+                            </h5>
+
+                            <p>
+
+                                Quickly search items by category, location or keyword.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body text-center">
+
+                            <i class="bi bi-shield-check display-4 text-success"></i>
+
+                            <h5 class="mt-3">
+
+                                Secure Platform
+
+                            </h5>
+
+                            <p>
+
+                                Designed to provide safe and reliable item reporting.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= KEY FEATURES ================= -->
+
+    <section class="py-5 bg-light">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="fw-bold">
+
+                    Key Features
+
+                </h2>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            ✔ Report Lost Items
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ Report Found Items
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ Upload Item Images
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ Search by Category
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            ✔ Search by Location
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ View Item Details
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ Mobile Responsive
+                        </li>
+
+                        <li class="list-group-item">
+                            ✔ Easy to Use Interface
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="fw-bold">
+
+                    How It Works
+
+                </h2>
+
+            </div>
+
+            <div class="row text-center">
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <div class="display-4 text-primary">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                            </div>
+
+                            <h4 class="mt-3">
+
+                                Step 1
+
+                            </h4>
+
+                            <p>
+
+                                Report a lost or found item with complete information.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <div class="display-4 text-success">
+
+                                <i class="bi bi-search"></i>
+
+                            </div>
+
+                            <h4 class="mt-3">
+
+                                Step 2
+
+                            </h4>
+
+                            <p>
+
+                                Search existing reports and find matching items.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body">
+
+                            <div class="display-4 text-danger">
+
+                                <i class="bi bi-box2-heart"></i>
+
+                            </div>
+
+                            <h4 class="mt-3">
+
+                                Step 3
+
+                            </h4>
+
+                            <p>
+
+                                Contact the owner or finder and return the item safely.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FAQ SECTION ================= -->
+
+    <section class="py-5 bg-light">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <h2 class="fw-bold">Frequently Asked Questions</h2>
+
+                <p class="text-muted">
+                    Common questions about the Lost & Found Portal.
+                </p>
+
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+
+                <div class="accordion-item">
+
+                    <h2 class="accordion-header">
+
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+
+                        How do I report a lost item?
+
+                    </button>
+
+                    </h2>
+
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+
+                        <div class="accordion-body">
+
+                            Open the <strong>Report Lost</strong> page, fill in the item details, upload an image (optional), and submit the form.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="accordion-item">
+
+                    <h2 class="accordion-header">
+
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+
+                        How can I report a found item?
+
+                    </button>
+
+                    </h2>
+
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
+                        <div class="accordion-body">
+
+                            Go to the <strong>Report Found</strong> page, enter the details and submit the report so the rightful owner can find it.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="accordion-item">
+
+                    <h2 class="accordion-header">
+
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+
+                        Can I search without creating an account?
+
+                    </button>
+
+                    </h2>
+
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+
+                        <div class="accordion-body">
+
+                            Yes. This project allows users to browse, search, and submit reports without logging in.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="bg-dark text-light pt-5 pb-3">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-4 mb-4">
+
+                    <h4 class="fw-bold">
+
+                        Lost & Found Portal
+
+                    </h4>
+
+                    <p>
+
+                        A simple platform that helps people report lost and found items and reconnect them with their owners.
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4">
+
+                    <h5>Quick Links</h5>
+
+                    <ul class="list-unstyled">
+
+                        <li><a href="index.html" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="search.html" class="text-light text-decoration-none">Search</a></li>
+                        <li><a href="about.html" class="text-light text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <h5>Reports</h5>
+
+                    <ul class="list-unstyled">
+
+                        <li><a href="report-lost.html" class="text-light text-decoration-none">Report Lost</a></li>
+                        <li><a href="report-found.html" class="text-light text-decoration-none">Report Found</a></li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <h5>Contact</h5>
+
+                    <p>
+                        <i class="bi bi-envelope-fill"></i> support@lostfound.com
+                    </p>
+
+                    <p>
+                        <i class="bi bi-telephone-fill"></i> +91 9309989532
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="text-center">
+
+                <p class="mb-0">
+
+                    © 2026 Lost & Found Portal. All Rights Reserved.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Project JS -->
+
+    <script src="js/api.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+
+</html>

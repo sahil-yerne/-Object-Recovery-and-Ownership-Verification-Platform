@@ -1,0 +1,283 @@
+[data-theme="dark"] body {
+    background-color: #05050a;
+    }
+
+/* ================= ITEM IMAGE ================= */
+
+[data-theme="dark"] #itemImage {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 0px;
+    border: 2px solid #00f3ff;
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    filter: contrast(1.1);
+}
+
+/* ================= MAIN TITLE ================= */
+
+[data-theme="dark"] #itemName {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #00f3ff !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+/* Status badge */
+
+[data-theme="dark"] #itemStatus {
+    font-size: 16px;
+    padding: 8px 16px;
+    border-radius: 0px;
+    letter-spacing: 2px;
+}
+
+/* ================= INFO TEXT ================= */
+
+[data-theme="dark"] .card-body p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #e0e6ed !important;
+    letter-spacing: 1px;
+}
+
+[data-theme="dark"] .card-body span {
+    font-weight: 700;
+    color: #00f3ff !important;
+    text-transform: uppercase;
+}
+
+/* Labels */
+
+[data-theme="dark"] .text-muted {
+    font-size: 14px;
+    color: #94a3b8 !important;
+}
+
+/* ================= DESCRIPTION ================= */
+
+[data-theme="dark"] #itemDescription {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #cbd5e1 !important;
+    background: rgba(0, 243, 255, 0.05);
+    padding: 15px;
+    border-left: 3px solid #00f3ff;
+}
+
+/* ================= CONTACT CARD ================= */
+
+[data-theme="dark"] .card {
+    border-radius: 0px;
+    border: 1px solid #334155;
+    background: #0d0f18 !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .card-header {
+    border-bottom: 1px solid #334155 !important;
+}
+
+/* Contact icons spacing */
+
+.bi {
+    margin-right: 8px;
+}
+
+/* Contact buttons */
+
+[data-theme="dark"] .btn {
+    border-radius: 0px;
+    padding: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* ================= SIMILAR ITEMS ================= */
+
+[data-theme="dark"] #similarItems .card {
+    border: 1px solid #334155;
+    border-radius: 0px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: #0d0f18 !important;
+}
+
+[data-theme="dark"] #similarItems .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    border-color: #00f3ff;
+}
+
+[data-theme="dark"] #similarItems img {
+    height: 160px;
+    object-fit: cover;
+    filter: grayscale(20%);
+    border-bottom: 1px solid #334155;
+}
+
+[data-theme="dark"] #similarItems .card:hover img {
+    filter: grayscale(0%);
+}
+
+[data-theme="dark"] #similarItems .card-title {
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* ================= BREADCRUMB ================= */
+
+[data-theme="dark"] .breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 0;
+    font-family: 'Rajdhani', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+[data-theme="dark"] .breadcrumb-item a {
+    text-decoration: none;
+    color: #ff003c !important;
+}
+
+[data-theme="dark"] .breadcrumb-item a:hover {
+    color: #00f3ff !important;
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
+}
+
+[data-theme="dark"] .breadcrumb-item.active {
+    color: #94a3b8 !important;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    #itemImage {
+        height: 250px;
+    }
+    #itemName {
+        font-size: 28px;
+    }
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* ================= BASIC THEME OVERRIDES (DETAILS) ================= */
+
+[data-theme="basic"] body {
+    background-color: #f8fafc !important;
+}
+
+[data-theme="basic"] #itemImage {
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+    filter: none !important;
+    border-radius: 8px !important;
+}
+
+[data-theme="basic"] #itemName {
+    color: #1e40af !important;
+    text-shadow: none !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+[data-theme="basic"] #itemStatus {
+    letter-spacing: 0 !important;
+    border-radius: 6px !important;
+}
+
+[data-theme="basic"] .card-body p {
+    color: #334155 !important;
+    letter-spacing: 0 !important;
+}
+
+[data-theme="basic"] .card-body span {
+    color: #2563eb !important;
+    text-transform: none !important;
+}
+
+[data-theme="basic"] .text-muted {
+    color: #64748b !important;
+}
+
+[data-theme="basic"] #itemDescription {
+    color: #334155 !important;
+    background: #f8fafc !important;
+    border-left: 3px solid #2563eb !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+
+[data-theme="basic"] .card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="basic"] .card-header {
+    background: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-radius: 10px 10px 0 0 !important;
+}
+
+[data-theme="basic"] #similarItems .card {
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    border-radius: 10px !important;
+}
+
+[data-theme="basic"] #similarItems .card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08) !important;
+    border-color: #cbd5e1 !important;
+}
+
+[data-theme="basic"] #similarItems img {
+    filter: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="basic"] #similarItems .card:hover img {
+    filter: none !important;
+}
+
+[data-theme="basic"] #similarItems .card-title {
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+    color: #1e293b !important;
+}
+
+[data-theme="basic"] .breadcrumb {
+    font-family: inherit !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+[data-theme="basic"] .breadcrumb-item a {
+    color: #2563eb !important;
+    text-shadow: none !important;
+}
+
+[data-theme="basic"] .breadcrumb-item a:hover {
+    color: #1d4ed8 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="basic"] .breadcrumb-item.active {
+    color: #64748b !important;
+}
+
+[data-theme="basic"] .btn {
+    border-radius: 8px !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}

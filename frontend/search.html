@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Search Items | Lost & Found Portal</title>
+
+    <meta name="description" content="Search lost and found items easily.">
+
+    <!-- Bootstrap CSS -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts (Rajdhani) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- TensorFlow.js + MobileNet for client-side AI image classification -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+
+    <!-- Leaflet CSS for Interactive Lost/Found Location Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <link rel="icon" href="assets/logo/favicon.png">
+
+    <!-- Theme Initialization -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('portal_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg  shadow sticky-top">
+
+        <div class="container">
+
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+
+                <img src="assets/logo/logo.png" alt="Logo" class="me-2 rounded-circle" style="height: 36px; width: 36px; object-fit: cover; background: white; padding: 2px;"> Lost & Found
+
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-1"></i> Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="report-lost.html"><i class="bi bi-exclamation-triangle-fill me-1"></i> Report Lost</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="report-found.html"><i class="bi bi-check-circle-fill me-1"></i> Report Found</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="search.html"><i class="bi bi-search me-1"></i> Search</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html"><i class="bi bi-info-circle-fill me-1"></i> About</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html"><i class="bi bi-envelope-fill me-1"></i> Contact</a>
+                    </li>
+
+                    <li class="nav-item dropdown ms-lg-3 my-1 my-lg-0">
+                        <button class="btn btn-sm btn-outline-info rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Change Theme">
+                            <i class="bi bi-moon-stars-fill text-info" id="themeIcon" style="font-size: 16px;"></i>
+                            <span id="themeLabel" class="d-none">Dark</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-1" aria-labelledby="themeDropdown" style="min-width: 150px;">
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3 active" type="button" data-theme-value="dark"><i class="bi bi-moon-stars-fill text-info"></i> Dark Cyberpunk</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="basic"><i class="bi bi-brightness-high-fill text-warning"></i> Basic Theme</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="midnight"><i class="bi bi-star-fill text-warning"></i> Midnight</button></li>
+                        </ul>
+                    </li></ul>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="page-banner banner-primary">
+
+        <div class="container text-center">
+
+            <h1 class="fw-bold">Smart Search & Location Map</h1>
+
+            <p class="lead">Search by item name, category, color, brand, location, date, voice &amp; fuzzy search with interactive location map recommendations.</p>
+            <p class="mt-2" style="font-size:13px;color:rgba(0,243,255,0.8);letter-spacing:1px;">
+                <i class="bi bi-robot me-1"></i> <strong>AI Auto-Categorization</strong> — Speak or upload an image and our AI instantly detects category, color &amp; brand
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- ================= SEARCH FILTER ================= -->
+
+    <section class="py-5">
+        <div class="container">
+            <div>
+
+                    <!-- Toggle Search Mode -->
+                    <div class="d-flex justify-content-center mb-4">
+                        <div class="btn-group" role="group" aria-label="Search Mode">
+                            <input type="radio" class="btn-check" name="searchMode" id="textMode" autocomplete="off" checked>
+                            <label class="btn btn-outline-primary px-4 py-2 fw-bold" for="textMode"><i class="bi bi-search me-2"></i>Smart Filter Search</label>
+                          
+                            <input type="radio" class="btn-check" name="searchMode" id="imageMode" autocomplete="off">
+                            <label class="btn btn-outline-primary px-4 py-2 fw-bold" for="imageMode"><i class="bi bi-camera me-2"></i>AI Lens Image Search</label>
+                        </div>
+                    </div>
+
+                    <div id="searchTabsContent">
+                        
+                        <!-- SMART FILTER SEARCH TAB -->
+                        <div class="tab-pane fade show active" id="text-search" role="tabpanel" aria-labelledby="text-search-tab">
+                            <form id="searchForm">
+                                <div class="row g-3">
+
+                                    <!-- Voice & Smart Keyword Input -->
+                                    <div class="col-lg-12 mb-2">
+                                        <label class="form-label d-flex justify-content-between align-items-center">
+                                            <span><i class="bi bi-mic-fill text-info me-1"></i> Voice &amp; Smart Search Keyword</span>
+                                            <span id="voiceStatus" class="badge bg-dark text-info d-none"><i class="bi bi-record-circle text-danger me-1"></i> Listening... Speak Now</span>
+                                            <span id="aiVoiceStatus" class="badge bg-dark text-warning d-none ms-2"><i class="bi bi-robot me-1"></i> AI Analyzing...</span>
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" id="keyword" class="form-control form-control-lg" placeholder="Speak or type: 'Red Samsung phone lost near library'...">
+                                            <button type="button" id="voiceSearchBtn" class="btn btn-outline-info px-4" title="Click to speak — AI will auto-detect category, color & brand">
+                                                <i class="bi bi-mic-fill fs-5" id="micIcon"></i>
+                                            </button>
+                                        </div>
+                                        <small class="text-muted mt-1 d-block"><i class="bi bi-robot text-warning me-1"></i> AI will auto-detect category, color &amp; brand from your speech</small>
+                                    </div>
+
+                                    <!-- Item Name Filter -->
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Item Name</label>
+                                        <input type="text" id="itemNameInput" class="form-control" placeholder="Wallet, Phone, Laptop...">
+                                    </div>
+
+                                    <!-- Category Filter -->
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Category</label>
+                                        <select id="category" class="form-select">
+                                            <option value="">All Categories</option>
+                                            <option value="Mobile">Mobile / Electronics</option>
+                                            <option value="Wallet">Wallet / Purse</option>
+                                            <option value="Bag">Bag / Backpack</option>
+                                            <option value="Laptop">Laptop / Tablet</option>
+                                            <option value="ID Card">ID Card / Passport</option>
+                                            <option value="Keys">Keys</option>
+                                            <option value="Documents">Documents / Files</option>
+                                            <option value="Jewellery">Jewellery / Watch</option>
+                                            <option value="Books">Books</option>
+                                            <option value="Accessories">Accessories</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <input type="text" id="otherCategoryInput" class="form-control mt-2 d-none" placeholder="Type category...">
+                                    </div>
+
+                                    <!-- Brand Filter -->
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Brand</label>
+                                        <input type="text" id="brandInput" class="form-control" placeholder="Samsung, Apple, Leather Co...">
+                                    </div>
+
+                                    <!-- Color Filter -->
+                                    <div class="col-lg-3 col-md-6">
+                                        <label class="form-label">Color</label>
+                                        <input type="text" id="colorInput" class="form-control" placeholder="Black, Red, Blue, Silver...">
+                                    </div>
+
+                                    <!-- Location Filter with Geolocate Button -->
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="location" class="form-label">Location / City</label>
+                                        <div class="input-group">
+                                            <input type="text" id="location" class="form-control" placeholder="Bus Stand, Campus, Delhi...">
+                                            <button type="button" id="geolocateBtn" class="btn btn-outline-primary" title="Detect My Current Location">
+                                                <i class="bi bi-geo-alt-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Date Filter -->
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="date" class="form-label">Date</label>
+                                        <input type="date" id="date" class="form-control">
+                                    </div>
+
+                                    <!-- Status Filter -->
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="status" class="form-label">Status</label>
+                                        <select id="status" class="form-select">
+                                            <option value="">All Statuses</option>
+                                            <option value="lost">Lost Items Only</option>
+                                            <option value="found">Found Items Only</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Sort By -->
+                                    <div class="col-lg-4 col-md-6">
+                                        <label for="sort" class="form-label">Sort By</label>
+                                        <select id="sort" class="form-select">
+                                            <option value="latest">Latest First</option>
+                                            <option value="distance">Proximity / Distance (Nearest First)</option>
+                                            <option value="relevance">Search Relevance</option>
+                                            <option value="oldest">Oldest First</option>
+                                            <option value="name">Item Name (A-Z)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Radius Slider -->
+                                    <div class="col-lg-4 col-md-6">
+                                        <label class="form-label d-flex justify-content-between">
+                                            <span>Location Search Radius</span>
+                                            <span id="radiusVal" class="text-info fw-bold">15 km</span>
+                                        </label>
+                                        <input type="range" id="radiusInput" class="form-range" min="1" max="100" value="15">
+                                    </div>
+
+
+
+                                    <!-- Buttons -->
+                                    <div class="col-12 mt-4 text-center">
+                                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                                            <i class="bi bi-search"></i> Search Items
+                                        </button>
+                                        <button type="reset" id="resetBtn" class="btn btn-outline-secondary btn-lg ms-2">
+                                            <i class="bi bi-arrow-counterclockwise"></i> Reset Filters
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- IMAGE SEARCH (LENS) TAB -->
+                        <div class="tab-pane fade d-none" id="image-search" role="tabpanel" aria-labelledby="image-search-tab">
+                            <div class="text-center py-4">
+                                <h4 class="mb-2" style="color:#00f3ff;"><i class="bi bi-robot me-2"></i>AI Lens — Upload or Snap a Photo</h4>
+                                <p class="text-muted mb-4" style="font-size:13px;">Our AI automatically identifies the object and suggests the best category, color &amp; brand</p>
+                                <div class="d-flex justify-content-center gap-4 mb-4">
+                                    <button id="uploadBtn" class="btn btn-primary btn-lg px-4" onclick="document.getElementById('imageInput').click()">
+                                        <i class="bi bi-upload"></i> Upload Image
+                                    </button>
+                                    <input type="file" id="imageInput" class="d-none" accept="image/*">
+                                    
+                                    <button id="cameraBtn" class="btn btn-primary btn-lg px-4">
+                                        <i class="bi bi-camera"></i> Use Camera
+                                    </button>
+                                </div>
+                                
+                                <div id="cameraContainer" class="d-none mb-4">
+                                    <video id="videoElement" class="w-100 rounded bg-dark" style="max-width: 500px;" autoplay></video>
+                                    <br>
+                                    <button id="captureBtn" class="btn btn-success mt-3"><i class="bi bi-camera-fill"></i> Capture</button>
+                                    <button id="closeCameraBtn" class="btn btn-danger mt-3 ms-2">Cancel</button>
+                                </div>
+                                
+                                <div id="previewContainer" class="d-none mb-4">
+                                    <h5>Preview</h5>
+                                    <img id="imagePreview" src="" alt="Preview" class="img-fluid rounded shadow" style="max-height: 300px;">
+                                    <div id="imageAIStatus" class="d-none mt-3">
+                                        <div class="d-flex align-items-center justify-content-center gap-2" style="color:#00f3ff;">
+                                            <span class="spinner-border spinner-border-sm"></span>
+                                            <span style="font-size:13px;letter-spacing:1px;">🤖 AI analyzing image...</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button id="searchImageBtn" class="btn btn-primary mt-3 px-5"><i class="bi bi-search"></i> Find Matching Items</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= SEARCH RESULTS & MAP SECTION ================= -->
+
+    <section class="pb-5">
+
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+
+                <div>
+                    <h3 class="mb-0">Search Results</h3>
+                    <small id="activeFilterBadge" class="text-muted"></small>
+                </div>
+
+                <div class="d-flex align-items-center gap-3">
+                    <!-- View Mode Toggle Buttons -->
+                    <div class="btn-group" role="group" aria-label="View Toggle">
+                        <button type="button" id="btnGridView" class="btn btn-outline-primary active" title="Grid Card View">
+                            <i class="bi bi-grid-3x3-gap-fill me-1"></i> Grid
+                        </button>
+                        <button type="button" id="btnMapView" class="btn btn-outline-primary" title="Map View">
+                            <i class="bi bi-map-fill me-1"></i> Map View
+                        </button>
+                        <button type="button" id="btnSplitView" class="btn btn-outline-primary" title="Split Screen Map & Grid">
+                            <i class="bi bi-layout-split me-1"></i> Split View
+                        </button>
+                    </div>
+
+                    <span id="resultCount" class="badge bg-primary fs-6">
+                        0 Items Found
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- Interactive Map Container -->
+            <div id="mapWrapper" class="mb-5 d-none">
+                <div class="card p-2 shadow-lg">
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+                        <span class="fw-bold text-info"><i class="bi bi-geo-alt-fill me-1"></i> Interactive Lost & Found Location Map</span>
+                        <div class="d-flex align-items-center gap-3 text-light small">
+                            <span><span class="badge bg-danger rounded-circle p-1 me-1">●</span> Lost Item</span>
+                            <span><span class="badge bg-success rounded-circle p-1 me-1">●</span> Found Item</span>
+                            <span class="text-muted">(Click map to search nearby radius)</span>
+                        </div>
+                    </div>
+                    <div id="map" style="height: 480px; width: 100%; border-radius: 4px;"></div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+
+            <div id="loadingSpinner" class="text-center my-5 d-none">
+
+                <div class="spinner-border text-primary" role="status">
+
+                </div>
+
+                <p class="mt-3">
+
+                    Searching Lost & Found database...
+
+                </p>
+
+            </div>
+
+            <!-- No Result -->
+
+            <div id="noResults" class="alert alert-warning d-none">
+
+                <h5>
+
+                    No items found matching your filter criteria.
+
+                </h5>
+
+                <p class="mb-0">
+
+                    Try broadening your search terms or toggling fuzzy search.
+
+                </p>
+
+            </div>
+
+            <!-- Results Grid Container -->
+
+            <div class="row" id="resultsContainer">
+
+                <!-- Dynamic Cards from search.js -->
+
+            </div>
+
+            <!-- NEARBY LOST & FOUND RECOMMENDATIONS PANEL -->
+            <div id="nearbySection" class="mt-5 pt-4 border-top border-secondary d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="text-info fw-bold text-uppercase mb-0">
+                        <i class="bi bi-radar me-2 text-danger"></i> Nearby Lost & Found Recommendations
+                    </h4>
+                    <span id="nearbySubtext" class="text-muted small">Based on selected location map area</span>
+                </div>
+                <div id="nearbyContainer" class="row">
+                    <!-- Dynamic Recommendation Cards -->
+                </div>
+            </div>
+
+            <!-- Pagination -->
+
+            <nav class="mt-5">
+
+                <ul id="pagination" class="pagination justify-content-center">
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </section>
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-dark text-light pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h4 class="fw-bold">
+                        Lost & Found Portal
+                    </h4>
+                    <p>
+                        A community platform to help people report lost items, report found items, and reunite owners with their belongings.
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5>
+                        Quick Links
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html" class="text-light text-decoration-none">Home</a></li>
+                        <li><a href="search.html" class="text-light text-decoration-none">Search</a></li>
+                        <li><a href="about.html" class="text-light text-decoration-none">About</a></li>
+                        <li><a href="contact.html" class="text-light text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5>
+                        Report
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li><a href="report-lost.html" class="text-light text-decoration-none">Lost Item</a></li>
+                        <li><a href="report-found.html" class="text-light text-decoration-none">Found Item</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>
+                        Contact
+                    </h5>
+                    <p>
+                        <i class="bi bi-envelope-fill"></i> support@lostfound.com
+                    </p>
+                    <p>
+                        <i class="bi bi-telephone-fill"></i> +91 9309989532
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p class="mb-0">
+                    © 2026 Lost & Found Portal. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Leaflet JS for Map Integration -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- JavaScript Files -->
+    <script src="js/api.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai-categorize.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/i18n.js"></script>
+</body>
+</html>

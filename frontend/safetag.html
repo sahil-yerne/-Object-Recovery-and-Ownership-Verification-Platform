@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeTag Protected Asset Recovery | Lost & Found</title>
+    <meta name="description" content="Official SafeTag Asset Recovery Interface. Return protected valuables safely and anonymously.">
+
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        body {
+            background-color: #070a13;
+            color: #e0e6ed;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        .safetag-container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .tag-card {
+            background: linear-gradient(145deg, rgba(13, 17, 34, 0.95), rgba(7, 10, 19, 0.95));
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 240, 255, 0.15);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tag-card.is-lost {
+            border-color: rgba(255, 59, 48, 0.5);
+            box-shadow: 0 10px 40px rgba(255, 59, 48, 0.25);
+        }
+
+        .tag-header {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(0, 114, 255, 0.05));
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding: 1.75rem;
+            text-align: center;
+        }
+
+        .tag-header.is-lost {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.2), rgba(180, 0, 0, 0.08));
+            border-bottom-color: rgba(255, 59, 48, 0.3);
+        }
+
+        .tag-badge {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+
+        .bounty-pill {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-weight: 800;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .action-btn-primary {
+            background: linear-gradient(135deg, #00f0ff, #0072ff);
+            color: #000;
+            font-weight: 700;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+
+        .action-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
+            color: #000;
+        }
+
+        .pulse-ring {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00f0ff;
+            animation: pulse 1.8s infinite;
+        }
+
+        .pulse-ring.red {
+            background: #ff3b30;
+            animation: pulse-red 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.8); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 12px rgba(255, 59, 48, 0); }
+            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+        }
+
+        .spec-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container py-5 safetag-container">
+
+        <!-- LOGO HEADER -->
+        <div class="text-center mb-4">
+            <a href="index.html" class="d-inline-flex align-items-center text-decoration-none text-light">
+                <img src="assets/logo/logo.png" alt="Logo" class="me-2 rounded-circle" style="height: 40px; width: 40px; object-fit: cover; background: white; padding: 2px;">
+                <span class="fs-4 fw-bold">Lost & Found Portal</span>
+            </a>
+            <p class="text-muted small mt-1">Smart Asset Recovery &amp; Privacy-Preserving SafeTag</p>
+        </div>
+
+        <!-- MAIN SAFETAG CARD -->
+        <div class="tag-card shadow" id="mainTagCard">
+            <!-- HEADER -->
+            <div class="tag-header" id="tagHeader">
+                <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                    <span class="pulse-ring" id="statusPulse"></span>
+                    <span class="tag-badge text-uppercase fw-bold text-cyan" id="statusBadgeText">Protected Asset Registered</span>
+                </div>
+                <h2 class="fw-extrabold text-light mb-1" id="assetTitle">Searching Asset...</h2>
+                <div class="text-muted small" id="tagCodeDisplay">TAG-XXXX-XXXX</div>
+            </div>
+
+            <!-- BODY CONTENT -->
+            <div class="p-4 p-md-5">
+
+                <!-- REWARD BANNER (IF SET) -->
+                <div class="text-center mb-4 d-none" id="rewardBanner">
+                    <div class="bounty-pill">
+                        <i class="bi bi-gift-fill fs-5"></i>
+                        <span>Finder Reward: ₹<span id="rewardAmountText">0</span> Cash Bounty</span>
+                    </div>
+                </div>
+
+                <!-- EMERGENCY OWNER MESSAGE -->
+                <div class="alert alert-dark border border-secondary mb-4" id="emergencyBox" style="background: rgba(15, 23, 42, 0.8);">
+                    <div class="d-flex gap-3 align-items-start">
+                        <i class="bi bi-chat-quote-fill text-cyan fs-3"></i>
+                        <div>
+                            <div class="fw-bold text-light small uppercase mb-1">Message from Verified Owner (<span id="ownerDisplayName">Owner</span>):</div>
+                            <p class="mb-0 text-muted fst-italic" id="emergencyNoteText">"If you have found this valuable, please use the button below to notify me. I appreciate your honesty and will arrange a safe return!"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASSET DETAILS GRID -->
+                <div class="row g-2 mb-4">
+                    <div class="col-6">
+                        <div class="spec-box">
+                            <span class="text-muted small d-block">Category</span>
+                            <span class="fw-bold text-light" id="specCategory">-</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="spec-box">
+                            <span class="text-muted small d-block">Brand / Make</span>
+                            <span class="fw-bold text-light" id="specBrand">-</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="spec-box">
+                            <span class="text-muted small d-block">Color</span>
+                            <span class="fw-bold text-light" id="specColor">-</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="spec-box">
+                            <span class="text-muted small d-block">Scan Verification</span>
+                            <span class="fw-bold text-success"><i class="bi bi-shield-check me-1"></i> Authentic SafeTag</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 1-CLICK LOCATION PING ACTION -->
+                <div class="mb-4">
+                    <button class="action-btn-primary w-100 fs-5 d-flex align-items-center justify-content-center gap-2 mb-3" id="pingLocationBtn">
+                        <i class="bi bi-geo-alt-fill"></i>
+                        <span>Notify Owner with My Location</span>
+                    </button>
+                    <small class="text-muted d-block text-center" style="font-size: 0.8rem;">
+                        <i class="bi bi-shield-lock me-1"></i> Your personal identity remains private. Only your current GPS location is dispatched to the owner.
+                    </small>
+                </div>
+
+                <!-- OPTIONAL MESSAGE ACCORDION -->
+                <div class="card bg-dark border-secondary mb-4">
+                    <div class="card-header border-secondary bg-transparent py-2">
+                        <a class="text-decoration-none text-light small fw-bold d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#msgCollapse">
+                            <span><i class="bi bi-envelope-plus me-1 text-info"></i> Leave optional contact info or meeting place</span>
+                            <i class="bi bi-chevron-down text-muted"></i>
+                        </a>
+                    </div>
+                    <div class="collapse" id="msgCollapse">
+                        <div class="card-body p-3">
+                            <textarea class="form-control bg-black text-light border-secondary mb-2" id="finderMessageInput" rows="2" placeholder="e.g. 'I left this at the library front desk' or 'You can call my mobile'"></textarea>
+                            <input type="text" class="form-control bg-black text-light border-secondary form-control-sm" id="finderContactHint" placeholder="Optional phone or email for owner to contact you">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RESULT FEEDBACK ALERT -->
+                <div class="alert d-none text-center" id="statusResultAlert"></div>
+
+                <!-- SAFE DROP-OFF HUBS LINK -->
+                <div class="border-top border-secondary pt-3 text-center">
+                    <p class="text-muted small mb-2">Prefer handing over to an official institutional desk?</p>
+                    <a href="search.html" class="btn btn-outline-info btn-sm px-3">
+                        <i class="bi bi-building-check me-1"></i> Find Nearest Verified Safe Drop-Off Zone
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">&copy; 2026 Intelligent Object Recovery &amp; SafeTag System. Protected by cryptographic anti-tamper seals.</small>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const tagCode = urlParams.get("tag");
+
+            if (!tagCode) {
+                document.getElementById("assetTitle").textContent = "No SafeTag Specified";
+                document.getElementById("emergencyNoteText").textContent = "Please scan a valid SafeTag QR code sticker to access asset recovery information.";
+                document.getElementById("pingLocationBtn").disabled = true;
+                return;
+            }
+
+            document.getElementById("tagCodeDisplay").textContent = tagCode;
+
+            // Fetch SafeTag details
+            try {
+                const res = await fetch(`/api/safetag/resolve/${tagCode}`);
+                const json = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(json.message || "Failed to locate SafeTag.");
+                }
+
+                const tag = json.data;
+
+                document.getElementById("assetTitle").textContent = tag.assetName;
+                document.getElementById("specCategory").textContent = tag.category;
+                document.getElementById("specBrand").textContent = tag.brand || "Not Specified";
+                document.getElementById("specColor").textContent = tag.color || "Not Specified";
+                document.getElementById("ownerDisplayName").textContent = tag.ownerDisplayName || "Owner";
+
+                if (tag.emergencyNote) {
+                    document.getElementById("emergencyNoteText").textContent = `"${tag.emergencyNote}"`;
+                }
+
+                if (tag.rewardAmount && tag.rewardAmount > 0) {
+                    document.getElementById("rewardBanner").classList.remove("d-none");
+                    document.getElementById("rewardAmountText").textContent = Number(tag.rewardAmount).toLocaleString();
+                }
+
+                if (tag.isLost) {
+                    document.getElementById("mainTagCard").classList.add("is-lost");
+                    document.getElementById("tagHeader").classList.add("is-lost");
+                    document.getElementById("statusPulse").className = "pulse-ring red";
+                    document.getElementById("statusBadgeText").className = "tag-badge text-uppercase fw-bold text-danger";
+                    document.getElementById("statusBadgeText").textContent = "🚨 URGENT: REPORTED LOST ASSET";
+                }
+
+            } catch (err) {
+                document.getElementById("assetTitle").textContent = "Invalid SafeTag";
+                document.getElementById("emergencyNoteText").textContent = err.message;
+                document.getElementById("pingLocationBtn").disabled = true;
+            }
+
+            // Location Ping Button Click
+            const pingBtn = document.getElementById("pingLocationBtn");
+            const alertBox = document.getElementById("statusResultAlert");
+
+            pingBtn.addEventListener("click", () => {
+                pingBtn.disabled = true;
+                pingBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Acquiring GPS Location...`;
+
+                function sendLocation(lat, lng) {
+                    const finderMessage = document.getElementById("finderMessageInput").value;
+                    const contactHint = document.getElementById("finderContactHint").value;
+
+                    fetch(`/api/safetag/ping/${tagCode}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            latitude: lat,
+                            longitude: lng,
+                            finderMessage,
+                            contactHint
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        alertBox.className = "alert alert-success";
+                        alertBox.innerHTML = `<strong>🎉 Location Dispatched!</strong><br>${data.message || 'Owner has been immediately notified.'}`;
+                        alertBox.classList.remove("d-none");
+                        pingBtn.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> Owner Successfully Notified!`;
+                    })
+                    .catch(err => {
+                        alertBox.className = "alert alert-danger";
+                        alertBox.textContent = "Error sending ping: " + err.message;
+                        alertBox.classList.remove("d-none");
+                        pingBtn.disabled = false;
+                        pingBtn.innerHTML = `<i class="bi bi-geo-alt-fill me-1"></i> Retry Sending Location`;
+                    });
+                }
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            sendLocation(position.coords.latitude, position.coords.longitude);
+                        },
+                        (error) => {
+                            // Location denied or unavailable — send without GPS
+                            sendLocation(null, null);
+                        },
+                        { timeout: 10000, enableHighAccuracy: true }
+                    );
+                } else {
+                    sendLocation(null, null);
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Admin Analytics & Hotspot Heatmap | Lost & Found</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        [data-theme="dark"] body, [data-theme="midnight"] body { background-color: #050811; color: #00f0ff; font-family: 'Inter', sans-serif; }
+        [data-theme="basic"] body { background-color: #f8f9fa; color: #212529; font-family: 'Inter', sans-serif; }
+        .admin-card { border-radius: 10px; border: 1px solid var(--border-color, #00f0ff); background: var(--card-bg, #0a0f1d); box-shadow: 0 0 15px rgba(0, 240, 255, 0.15); }
+        [data-theme="basic"] .admin-card { background: #ffffff; border: 1px solid #dee2e6; color: #212529; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .admin-card-title { font-family: 'Orbitron', sans-serif; font-weight: 700; letter-spacing: 1px; }
+        #heatmapCanvas { height: 450px; border-radius: 8px; border: 1px solid var(--border-color, #00f0ff); }
+        [data-theme="basic"] #heatmapCanvas { border: 1px solid #dee2e6; }
+        .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; }
+    </style>
+    <!-- Immediate theme setting to prevent UI flash -->
+    <script>
+        const savedTheme = localStorage.getItem("portal_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", savedTheme);
+    </script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black border-bottom border-cyan">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand fw-bold text-cyan" href="index.html">
+                <i class="bi bi-cpu-fill text-cyan me-2"></i> CYBERPUNK ADMIN DASHBOARD
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-black border border-cyan text-cyan me-3 px-3 py-2"><i class="bi bi-broadcast me-1 text-danger"></i> System Online</span>
+                <a href="index.html" class="btn btn-outline-info btn-sm">Exit Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container-fluid px-4 py-4">
+
+        <!-- NAVIGATION TABS -->
+        <ul class="nav nav-pills mb-4 gap-2 border-bottom border-secondary pb-3" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold text-cyan" id="tab-analytics-btn" data-bs-toggle="pill" data-bs-target="#tab-analytics" type="button" role="tab">
+                    <i class="bi bi-graph-up-arrow me-1"></i> Analytics & Heatmap
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-users-btn" data-bs-toggle="pill" data-bs-target="#tab-users" type="button" role="tab">
+                    <i class="bi bi-people-fill me-1"></i> User Management (<span id="userTabCount">0</span>)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-claims-btn" data-bs-toggle="pill" data-bs-target="#tab-claims" type="button" role="tab">
+                    <i class="bi bi-shield-exclamation me-1"></i> Claims & Disputes (<span id="claimTabCount">0</span>)
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-items-btn" data-bs-toggle="pill" data-bs-target="#tab-items" type="button" role="tab">
+                    <i class="bi bi-box-seam me-1"></i> Items Moderation
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-audit-btn" data-bs-toggle="pill" data-bs-target="#tab-audit" type="button" role="tab">
+                    <i class="bi bi-journal-text me-1"></i> Audit Trail
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-fraud-btn" data-bs-toggle="pill" data-bs-target="#tab-fraud" type="button" role="tab">
+                    <i class="bi bi-shield-slash me-1"></i> Fraud Intelligence
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-cyan" id="tab-config-btn" data-bs-toggle="pill" data-bs-target="#tab-config" type="button" role="tab">
+                    <i class="bi bi-sliders me-1"></i> AI Weights & Config
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="adminTabsContent">
+            <!-- TAB 1: ANALYTICS & HEATMAP -->
+            <div class="tab-pane fade show active" id="tab-analytics" role="tabpanel">
+                <!-- STATS ROW -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="admin-card p-3 text-center">
+                            <div class="text-muted small uppercase">Total Reported Items</div>
+                            <div class="stat-value text-cyan" id="statTotalItems">0</div>
+                            <small class="text-info"><i class="bi bi-database me-1"></i> Active DB Records</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card p-3 text-center">
+                            <div class="text-muted small uppercase">Lost Items</div>
+                            <div class="stat-value text-danger" id="statLostCount">0</div>
+                            <small class="text-muted"><i class="bi bi-exclamation-octagon me-1"></i> Active Lost Signals</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card p-3 text-center">
+                            <div class="text-muted small uppercase">Found Items</div>
+                            <div class="stat-value text-success" id="statFoundCount">0</div>
+                            <small class="text-success"><i class="bi bi-check-circle me-1"></i> Recovered / Found</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="admin-card p-3 text-center">
+                            <div class="text-muted small uppercase">AI Recovery Rate</div>
+                            <div class="stat-value text-warning" id="statRecoveryRate">0%</div>
+                            <small class="text-warning"><i class="bi bi-lightning-charge me-1"></i> High Success Score</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HEATMAP & ANALYTICS ROW -->
+                <div class="row g-4">
+                    <!-- LEAFLET HEATMAP -->
+                    <div class="col-lg-8">
+                        <div class="admin-card p-3 h-100">
+                            <h5 class="admin-card-title text-cyan mb-3">
+                                <i class="bi bi-radar text-danger me-2"></i> Lost & Found Hotspot Spatial Heatmap
+                            </h5>
+                            <div id="heatmapCanvas"></div>
+                            <div class="d-flex justify-content-between align-items-center mt-2 px-2 small text-muted">
+                                <span><i class="bi bi-circle-fill text-danger me-1"></i> Red Clusters: High Lost Density</span>
+                                <span><i class="bi bi-circle-fill text-success me-1"></i> Green Clusters: Found Locations</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORY BREAKDOWN -->
+                    <div class="col-lg-4">
+                        <div class="admin-card p-3 h-100">
+                            <h5 class="admin-card-title text-cyan mb-3">
+                                <i class="bi bi-pie-chart-fill text-info me-2"></i> Category Breakdown
+                            </h5>
+                            <div id="categoryBreakdownList" class="d-flex flex-column gap-3">
+                                <!-- Populated by admin.js -->
+                                <div class="text-center text-muted my-auto">Loading analytics...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: USER MANAGEMENT -->
+            <div class="tab-pane fade" id="tab-users" role="tabpanel">
+                <div class="admin-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="admin-card-title text-cyan mb-0"><i class="bi bi-people-fill me-2"></i> User Moderation & Ban Control</h5>
+                        <button class="btn btn-sm btn-outline-info" id="refreshUsersBtn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email / Phone</th>
+                                    <th>Role</th>
+                                    <th>Trust Score</th>
+                                    <th>Points / Badge</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr><td colspan="8" class="text-center text-muted py-4">Loading users...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: CLAIMS & DISPUTES -->
+            <div class="tab-pane fade" id="tab-claims" role="tabpanel">
+                <div class="admin-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="admin-card-title text-cyan mb-0"><i class="bi bi-shield-exclamation me-2"></i> Claims & Ownership Dispute Resolution</h5>
+                        <button class="btn btn-sm btn-outline-info" id="refreshClaimsBtn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0" id="claimsTable">
+                            <thead>
+                                <tr>
+                                    <th>Claim #</th>
+                                    <th>Item</th>
+                                    <th>Claimant</th>
+                                    <th>Proof & Evidence</th>
+                                    <th>Status</th>
+                                    <th>Actions / Dispute Decision</th>
+                                </tr>
+                            </thead>
+                            <tbody id="claimsTableBody">
+                                <tr><td colspan="6" class="text-center text-muted py-4">Loading claims...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ITEMS MODERATION -->
+            <div class="tab-pane fade" id="tab-items" role="tabpanel">
+                <div class="admin-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="admin-card-title text-cyan mb-0"><i class="bi bi-box-seam me-2"></i> Item Moderation (Spam / Inappropriate Content Removal)</h5>
+                        <button class="btn btn-sm btn-outline-info" id="refreshItemsBtn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0" id="itemsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Location</th>
+                                    <th>Contact</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="itemsTableBody">
+                                <tr><td colspan="7" class="text-center text-muted py-4">Loading items...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <!-- TAB 5: AUDIT TRAIL -->
+            <div class="tab-pane fade" id="tab-audit" role="tabpanel">
+                <div class="admin-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="admin-card-title text-cyan mb-0"><i class="bi bi-journal-text me-2"></i> Immutable Security & Action Audit Trail</h5>
+                        <button class="btn btn-sm btn-outline-info" id="refreshAuditBtn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0" id="auditTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Actor ID</th>
+                                    <th>Role</th>
+                                    <th>Action</th>
+                                    <th>Target</th>
+                                    <th>Details</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="auditTableBody">
+                                <tr><td colspan="7" class="text-center text-muted py-4">Loading audit logs...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: FRAUD RISK INTELLIGENCE -->
+            <div class="tab-pane fade" id="tab-fraud" role="tabpanel">
+                <div class="admin-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="admin-card-title text-danger mb-0"><i class="bi bi-shield-slash me-2"></i> Automated Fraud & Duplicate Claims Intelligence</h5>
+                        <button class="btn btn-sm btn-outline-info" id="refreshFraudBtn"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle mb-0" id="fraudTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item</th>
+                                    <th>Claimant</th>
+                                    <th>Risk Level</th>
+                                    <th>Risk Score</th>
+                                    <th>Signals / Flags</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fraudTableBody">
+                                <tr><td colspan="7" class="text-center text-muted py-4">Loading fraud alerts...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 7: AI MATCHING WEIGHTS & ENGINE CONFIG -->
+            <div class="tab-pane fade" id="tab-config" role="tabpanel">
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="admin-card p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h5 class="admin-card-title text-cyan mb-1"><i class="bi bi-sliders me-2"></i> Hybrid AI Matching Engine Weights</h5>
+                                    <p class="text-muted small mb-0">Fine-tune the multi-modal scoring algorithm weights. Active weights are loaded dynamically.</p>
+                                </div>
+                                <button class="btn btn-sm btn-outline-info" id="loadConfigBtn"><i class="bi bi-arrow-clockwise"></i> Reset to Current</button>
+                            </div>
+
+                            <form id="matchingConfigForm" class="mt-4">
+                                <!-- Visual Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-camera-fill text-info me-1"></i> Visual Similarity Weight (MobileNet / Cosine)</label>
+                                        <span class="badge bg-info fw-bold" id="label_weight_visual">0.30</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_visual" min="0" max="1" step="0.05" value="0.30">
+                                    <small class="text-muted">Weight assigned to MobileNet transfer-learning visual embeddings.</small>
+                                </div>
+
+                                <!-- Text Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-file-text-fill text-warning me-1"></i> Semantic Text Similarity Weight (N-Gram Jaccard)</label>
+                                        <span class="badge bg-warning fw-bold text-dark" id="label_weight_text">0.20</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_text" min="0" max="1" step="0.05" value="0.20">
+                                    <small class="text-muted">Weight assigned to description and item name token overlap.</small>
+                                </div>
+
+                                <!-- Category Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-tags-fill text-primary me-1"></i> Exact Category Match Weight</label>
+                                        <span class="badge bg-primary fw-bold" id="label_weight_category">0.20</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_category" min="0" max="1" step="0.05" value="0.20">
+                                    <small class="text-muted">Full weight granted when item category matches exactly.</small>
+                                </div>
+
+                                <!-- Attribute Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-palette-fill text-danger me-1"></i> Attribute Match Weight (Brand & Color)</label>
+                                        <span class="badge bg-danger fw-bold" id="label_weight_attribute">0.15</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_attribute" min="0" max="1" step="0.05" value="0.15">
+                                    <small class="text-muted">Weight assigned to brand name similarity and dominant color match.</small>
+                                </div>
+
+                                <!-- Location Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-geo-alt-fill text-success me-1"></i> Geospatial Proximity Weight (Haversine)</label>
+                                        <span class="badge bg-success fw-bold" id="label_weight_location">0.10</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_location" min="0" max="1" step="0.05" value="0.10">
+                                    <small class="text-muted">Proximity decay based on spherical distance in kilometers.</small>
+                                </div>
+
+                                <!-- Temporal Weight -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-calendar-event-fill text-secondary me-1"></i> Temporal Proximity Weight (Day Gap)</label>
+                                        <span class="badge bg-secondary fw-bold" id="label_weight_temporal">0.05</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="weight_temporal" min="0" max="1" step="0.05" value="0.05">
+                                    <small class="text-muted">Proximity score decay based on day gap between lost and found dates.</small>
+                                </div>
+
+                                <!-- Threshold -->
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-bold text-light mb-0"><i class="bi bi-funnel-fill text-info me-1"></i> Minimum Candidate Match Threshold (%)</label>
+                                        <span class="badge bg-dark border border-cyan text-cyan fw-bold" id="label_match_threshold">25%</span>
+                                    </div>
+                                    <input type="range" class="form-range" id="match_threshold" min="10" max="75" step="5" value="25">
+                                    <small class="text-muted">Items with hybrid score below this threshold will not appear in candidates.</small>
+                                </div>
+
+                                <div class="d-flex gap-2 mt-4 pt-3 border-top border-secondary">
+                                    <button type="submit" class="btn btn-primary px-4 fw-bold" id="saveWeightsBtn">
+                                        <i class="bi bi-check-circle-fill me-1"></i> Save & Deploy AI Configuration
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="restoreDefaultsBtn">
+                                        <i class="bi bi-arrow-counterclockwise me-1"></i> Restore Defaults
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="admin-card p-4 mb-4">
+                            <h5 class="admin-card-title text-warning mb-3"><i class="bi bi-award-fill me-2"></i> Karma Points Policy</h5>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Points for Reporting Lost Item</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" id="points_report_lost" value="20">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Points for Reporting Found Item</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" id="points_report_found" value="50">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label small text-muted">Points for Verified Handover Return</label>
+                                <input type="number" class="form-control bg-dark text-light border-secondary" id="points_handover" value="200">
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-warning w-100 fw-bold" id="savePointsBtn">
+                                <i class="bi bi-save me-1"></i> Update Points Policy
+                            </button>
+                        </div>
+
+                        <div class="admin-card p-4">
+                            <h6 class="fw-bold text-light mb-2"><i class="bi bi-info-circle-fill text-info me-2"></i> Continuous Matching Active</h6>
+                            <p class="small text-muted mb-0">Whenever any new lost or found item is reported, the background matching engine immediately scans the database using these active weights and automatically generates notifications for candidates above the threshold.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEAFLET & HEATMAP JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+    <!-- ADMIN JS -->
+    <script src="js/helpers.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>

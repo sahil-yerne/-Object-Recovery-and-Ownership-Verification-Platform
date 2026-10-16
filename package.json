@@ -1,0 +1,15 @@
+{
+  "name": "lost-and-found-portal",
+  "version": "1.0.0",
+  "description": "Lost and Found Portal",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "build": "npm --prefix backend install",
+    "postinstall": "npm --prefix backend install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {}
+}

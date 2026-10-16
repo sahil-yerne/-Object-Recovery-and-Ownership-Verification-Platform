@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report Lost Item | Lost & Found Portal</title>
+
+    <meta name="description" content="Report a lost item using the Lost & Found Portal.">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts (Rajdhani) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Rajdhani:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+    <link rel="icon" href="assets/logo/favicon.png">
+
+    <!-- Theme Initialization -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('portal_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar navbar-expand-lg  shadow sticky-top">
+
+        <div class="container">
+
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+
+                <img src="assets/logo/logo.png" alt="Logo" class="me-2 rounded-circle" style="height: 36px; width: 36px; object-fit: cover; background: white; padding: 2px;"> Lost & Found
+
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+            <div class="collapse navbar-collapse" id="navbar">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html"><i class="bi bi-house-door-fill me-1"></i> Home</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="report-lost.html"><i class="bi bi-exclamation-triangle-fill me-1"></i> Report Lost</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="report-found.html"><i class="bi bi-check-circle-fill me-1"></i> Report Found</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="search.html"><i class="bi bi-search me-1"></i> Search</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html"><i class="bi bi-info-circle-fill me-1"></i> About</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html"><i class="bi bi-envelope-fill me-1"></i> Contact</a>
+                    </li>
+
+                    <li class="nav-item dropdown ms-lg-3 my-1 my-lg-0">
+                        <button class="btn btn-sm btn-outline-info rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 36px; height: 36px;" type="button" id="themeDropdown" data-bs-toggle="dropdown" aria-expanded="false" title="Change Theme">
+                            <i class="bi bi-moon-stars-fill text-info" id="themeIcon" style="font-size: 16px;"></i>
+                            <span id="themeLabel" class="d-none">Dark</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-1" aria-labelledby="themeDropdown" style="min-width: 150px;">
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3 active" type="button" data-theme-value="dark"><i class="bi bi-moon-stars-fill text-info"></i> Dark Cyberpunk</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="basic"><i class="bi bi-brightness-high-fill text-warning"></i> Basic Theme</button></li>
+                            <li><button class="dropdown-item d-flex align-items-center gap-2 py-1.5 px-3" type="button" data-theme-value="midnight"><i class="bi bi-star-fill text-warning"></i> Midnight</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+
+    <section class="page-banner banner-lost">
+        <div class="container text-center">
+            <h1>Report Lost Item</h1>
+            <p class="lead">Fill in the details below so others can help you find your lost item.</p>
+        </div>
+    </section>
+
+    <!-- ================= LOST ITEM FORM ================= -->
+
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-10">
+
+                    <div>
+                        <div class="p-4">
+
+                            <h3 class="text-center mb-4">
+
+                                Lost Item Details
+
+                            </h3>
+
+                            <!-- Voice & GPS Assist Toolbar -->
+                            <div class="d-flex flex-wrap gap-2 mb-4 p-3 rounded-3 bg-dark border border-secondary border-opacity-25 align-items-center justify-content-between">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-info text-dark fw-bold">⚡ Smart Assist</span>
+                                    <small class="text-muted">Speak or tap GPS to auto-fill details</small>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-sm btn-outline-info btn-voice-fill" onclick="voiceAssistant.toggle()">
+                                        <i class="bi bi-mic-fill me-1"></i> Voice Auto-Fill
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="fetchCurrentGPSLocation()">
+                                        <i class="bi bi-crosshair me-1"></i> Use GPS Location
+                                    </button>
+                                </div>
+                            </div>
+
+                            <form id="lostItemForm" enctype="multipart/form-data">
+
+                                <div class="row">
+
+                                    <!-- Item Name -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="itemName" class="form-label">
+
+                                        Item Name <span class="text-danger">*</span>
+
+                                    </label>
+
+                                        <input type="text" class="form-control" id="itemName" name="itemName" placeholder="e.g. Black Wallet" required>
+
+                                    </div>
+
+                                    <!-- Category -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="category" class="form-label">
+
+                                        Category <span class="text-danger">*</span>
+
+                                    </label>
+
+                                        <select class="form-select" id="category" name="category" required>
+
+                                        <option value="">Select Category</option>
+                                        <option>Mobile</option>
+                                        <option>Wallet</option>
+                                        <option>Laptop</option>
+                                        <option>Bag</option>
+                                        <option>ID Card</option>
+                                        <option>Keys</option>
+                                        <option>Documents</option>
+                                        <option>Jewellery</option>
+                                        <option>Other</option>
+
+                                    </select>
+                                        <input type="text" id="otherCategoryInput" class="form-control mt-2 d-none" placeholder="Please specify category...">
+
+                                    </div>
+
+                                    <!-- Brand -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="brand" class="form-label">
+                                            Brand
+                                        </label>
+
+                                        <select class="form-select" id="brand" name="brand">
+                                            <option value="">Select Brand</option>
+                                            <option value="Apple">Apple</option>
+                                            <option value="Samsung">Samsung</option>
+                                            <option value="HP">HP</option>
+                                            <option value="Dell">Dell</option>
+                                            <option value="Lenovo">Lenovo</option>
+                                            <option value="Titan">Titan</option>
+                                            <option value="Nike">Nike</option>
+                                            <option value="Adidas">Adidas</option>
+                                            <option value="Boat">Boat</option>
+                                            <option value="Sony">Sony</option>
+                                            <option value="Wildcraft">Wildcraft</option>
+                                            <option value="Leather Co">Leather Co</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <input type="text" id="otherBrandInput" class="form-control mt-2 d-none" placeholder="Specify brand...">
+
+                                    </div>
+
+                                    <!-- Color -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="color" class="form-label d-flex justify-content-between align-items-center">
+                                            <span>Color</span>
+                                            <button type="button" id="detectColorBtn" class="btn btn-sm btn-outline-info py-0 px-2" style="font-size:0.75rem;">
+                                                <i class="bi bi-magic me-1"></i> AI Detect Color
+                                            </button>
+                                        </label>
+
+                                        <input type="text" class="form-control" id="color" name="color" placeholder="e.g. Black, Blue, Red">
+
+                                    </div>
+                                    <!-- Date Lost -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="lostDate" class="form-label">
+                                        Date Lost <span class="text-danger">*</span>
+                                    </label>
+
+                                        <input type="date" class="form-control" id="lostDate" name="lostDate" required>
+
+                                    </div>
+
+                                    <!-- Time Lost -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="lostTime" class="form-label">
+                                        Approximate Time
+                                    </label>
+
+                                        <input type="time" class="form-control" id="lostTime" name="lostTime">
+
+                                    </div>
+
+                                    <!-- Location + Map Picker -->
+
+                                    <div class="col-md-12 mb-3">
+
+                                        <label for="location" class="form-label">
+                                            <i class="bi bi-geo-alt-fill me-1" style="color:#ff003c"></i>
+                                            Lost Location <span class="text-danger">*</span>
+                                        </label>
+
+                                        <input type="text" class="form-control" id="location" name="location"
+                                               placeholder="Type address or pick on map below" required autocomplete="off">
+
+                                        <!-- Hidden coords -->
+                                        <input type="hidden" id="latitude" name="latitude">
+                                        <input type="hidden" id="longitude" name="longitude">
+
+                                        <!-- Map Picker Widget -->
+                                        <div class="location-picker-section mt-2">
+
+                                            <!-- Controls row -->
+                                            <div class="lp-toggle-row">
+                                                <button type="button" id="toggleMapBtn">
+                                                    <i class="bi bi-map me-1"></i> Pick on Map
+                                                </button>
+                                                <button type="button" id="gpsLocationBtn">
+                                                    <i class="bi bi-crosshair2 me-1"></i> Use My GPS
+                                                </button>
+                                                <span id="coordsDisplay" class="d-none"></span>
+                                                <span id="locationLoadingBadge" class="d-none">⟳ LOCATING...</span>
+                                            </div>
+
+                                            <!-- Collapsible: search + map -->
+                                            <div id="locationMapWrapper" class="d-none">
+
+                                                <!-- Address search -->
+                                                <div class="lp-search-row">
+                                                    <input type="text" id="mapSearchInput"
+                                                           placeholder="🔍  Search city, area, landmark...">
+                                                    <div id="mapSearchResults" class="d-none"></div>
+                                                </div>
+
+                                                <!-- Leaflet map canvas -->
+                                                <div id="locationPickerMap"></div>
+
+                                                <div class="lp-hint">
+                                                    <i class="bi bi-hand-index-thumb me-1"></i>
+                                                    Click anywhere on the map or drag the marker to set the exact location.
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Description -->
+
+                                    <div class="col-md-12 mb-3">
+
+                                        <label for="description" class="form-label">
+                                        Description
+                                    </label>
+
+                                        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Describe your item, unique marks, serial number, etc."></textarea>
+
+                                    </div>
+
+                                    <!-- Secret Question (Ownership Quiz) -->
+                                    <div class="col-md-6 mb-3">
+                                        <label for="secretQuestion" class="form-label text-warning">
+                                            🔒 Secret Verification Question (Optional)
+                                        </label>
+                                        <input type="text" class="form-control" id="secretQuestion" name="secretQuestion" placeholder="e.g. What sticker is on the back case?">
+                                        <small class="text-muted">Used for claim ownership verification quiz</small>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="secretAnswer" class="form-label text-warning">
+                                            🔑 Secret Answer
+                                        </label>
+                                        <input type="text" class="form-control" id="secretAnswer" name="secretAnswer" placeholder="e.g. Red Batman sticker">
+                                    </div>
+
+                                    <!-- Image Upload -->
+
+                                    <div class="col-md-6 mb-4">
+
+                                        <label for="images" class="form-label d-flex justify-content-between align-items-center">
+                                            <span>Upload Images (Multiple)</span>
+                                            <button type="button" id="lensScanBtn" class="btn btn-sm btn-outline-warning py-0 px-2" style="font-size:0.75rem;">
+                                                <i class="bi bi-camera me-1"></i> 🔍 AI Lens Scan & Autofill
+                                            </button>
+                                        </label>
+
+                                        <input type="file" class="form-control" id="image" name="images" accept="image/*" multiple>
+
+                                        <small class="text-muted">
+                                            JPG, JPEG or PNG (Max 5 files, 5 MB each)
+                                        </small>
+
+                                    </div>
+
+                                    <!-- Image Preview -->
+
+                                    <div class="col-md-6 mb-4 text-center">
+
+                                        <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 justify-content-center">
+                                            <img id="imagePreview" src="assets/images/no-image.png" alt="Preview" class="img-fluid rounded border" style="max-height:140px;">
+                                        </div>
+
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <h4 class="mb-4">
+                                        Contact Information
+                                    </h4>
+
+                                    <!-- Contact Name -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="contactName" class="form-label">
+                                        Full Name <span class="text-danger">*</span>
+                                    </label>
+
+                                        <input type="text" class="form-control" id="contactName" name="contactName" required>
+
+                                    </div>
+
+                                    <!-- Phone -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="phone" class="form-label">
+                                        Phone Number <span class="text-danger">*</span>
+                                    </label>
+
+                                        <input type="tel" class="form-control" id="phone" name="phone" maxlength="10" required>
+
+                                    </div>
+
+                                    <!-- Email -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="email" class="form-label">
+                                        Email Address
+                                    </label>
+
+                                        <input type="email" class="form-control" id="email" name="email">
+
+                                    </div>
+
+                                    <!-- Reward -->
+
+                                    <div class="col-md-6 mb-3">
+
+                                        <label for="reward" class="form-label">
+                                        Reward (Optional)
+                                    </label>
+
+                                        <input type="text" class="form-control" id="reward" name="reward" placeholder="e.g. ₹500">
+
+                                    </div>
+
+                                    <!-- Submit -->
+
+                                    <div class="col-12 mt-4 text-center">
+
+                                        <button type="submit" class="btn btn-danger btn-lg px-5">
+
+                                        <i class="bi bi-send-fill"></i>
+
+                                        Submit Report
+
+                                    </button>
+
+                                        <button type="reset" class="btn btn-outline-secondary btn-lg ms-2">
+
+                                        Reset
+
+                                    </button>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= GUIDELINES ================= -->
+
+    <section class="py-5 bg-light">
+
+        <div class="container">
+
+            <div class="alert alert-warning">
+
+                <h4>
+                    <i class="bi bi-exclamation-triangle-fill"></i> Important Guidelines
+                </h4>
+
+                <ul class="mb-0">
+
+                    <li>Provide accurate information about your lost item.</li>
+
+                    <li>Upload a clear image if available.</li>
+
+                    <li>Double-check your contact details before submitting.</li>
+
+                    <li>Do not share sensitive personal information.</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="bg-dark text-light pt-5 pb-3">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-4 mb-4">
+
+                    <h4 class="fw-bold">
+                        Lost & Found Portal
+                    </h4>
+
+                    <p>
+                        Report lost and found items quickly and help reunite owners with their belongings through a simple, secure and responsive platform.
+                    </p>
+
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-4">
+
+                    <h5>Quick Links</h5>
+
+                    <ul class="list-unstyled">
+
+                        <li>
+                            <a href="index.html" class="text-light text-decoration-none">
+                            Home
+                        </a>
+                        </li>
+
+                        <li>
+                            <a href="search.html" class="text-light text-decoration-none">
+                            Search
+                        </a>
+                        </li>
+
+                        <li>
+                            <a href="about.html" class="text-light text-decoration-none">
+                            About
+                        </a>
+                        </li>
+
+                        <li>
+                            <a href="contact.html" class="text-light text-decoration-none">
+                            Contact
+                        </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                    <h5>Services</h5>
+
+                    <ul class="list-unstyled">
+
+                        <li>
+                            <a href="report-lost.html" class="text-light text-decoration-none">
+                            Report Lost
+                        </a>
+                        </li>
+
+                        <li>
+                            <a href="report-found.html" class="text-light text-decoration-none">
+                            Report Found
+                        </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div class="col-lg-3">
+
+                    <h5>Contact</h5>
+
+                    <p>
+                        <i class="bi bi-envelope-fill"></i> support@lostfound.com
+                    </p>
+
+                    <p>
+                        <i class="bi bi-telephone-fill"></i> +91 9876543210
+                    </p>
+
+                    <p>
+                        <i class="bi bi-geo-alt-fill"></i> Maharashtra, India
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="row align-items-center">
+
+                <div class="col-md-6">
+
+                    <p class="mb-0">
+                        © 2026 Lost & Found Portal. All Rights Reserved.
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 text-md-end">
+
+                    <a href="#" class="text-light me-3">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+
+                    <a href="#" class="text-light me-3">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+
+                    <a href="#" class="text-light me-3">
+                        <i class="bi bi-linkedin"></i>
+                               <a href="#" class="text-light">
+                        <i class="bi bi-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- Project JavaScript -->
+    <script src="js/api.js"></script>
+    <script src="js/helpers.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/locationPicker.js"></script>
+    <script src="js/matchModal.js"></script>
+    <script src="js/reportLost.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/voiceAssistant.js"></script>
+</body>
+</html>

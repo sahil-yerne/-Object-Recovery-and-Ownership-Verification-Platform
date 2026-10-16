@@ -1,0 +1,111 @@
+/* ================= GLOBAL RESPONSIVE ================= */
+
+@media (max-width: 1200px) {
+    .hero-section h1 {
+        font-size: 42px;
+    }
+}
+
+
+/* ================= TABLET VIEW ================= */
+
+@media (max-width: 992px) {
+    /* Navbar spacing */
+    .navbar-nav {
+        text-align: center;
+        padding-top: 10px;
+    }
+    /* Hero text */
+    .hero-section h1 {
+        font-size: 36px;
+    }
+    .hero-section p {
+        font-size: 16px;
+    }
+    /* Cards spacing */
+    .card {
+        margin-bottom: 15px;
+    }
+}
+
+
+/* ================= MOBILE VIEW ================= */
+
+@media (max-width: 768px) {
+    /* Hero */
+    .hero-section {
+        padding: 50px 15px;
+    }
+    .hero-section h1 {
+        font-size: 30px;
+    }
+    .hero-section p {
+        font-size: 14px;
+    }
+    /* Buttons full width */
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    /* Forms */
+    .form-control,
+    .form-select {
+        font-size: 14px;
+    }
+    /* Search results */
+    #resultsContainer .col-md-4 {
+        width: 100%;
+    }
+}
+
+
+/* ================= SMALL MOBILE ================= */
+
+@media (max-width: 576px) {
+    .hero-section h1 {
+        font-size: 26px;
+    }
+    .hero-section p {
+        font-size: 13px;
+    }
+    /* Cards padding */
+    .card-body {
+        padding: 12px;
+    }
+    /* Footer alignment */
+    footer {
+        text-align: center;
+    }
+    footer .text-md-end {
+        text-align: center !important;
+        margin-top: 10px;
+    }
+}
+
+
+/* ================= IMAGE RESPONSIVE ================= */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* ================= TABLE RESPONSIVE FIX ================= */
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+
+/* ================= UTILITIES ================= */
+
+.hide-mobile {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
