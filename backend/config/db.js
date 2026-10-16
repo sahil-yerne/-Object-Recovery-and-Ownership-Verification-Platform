@@ -11,43 +11,17 @@ dotenv.config();
 // ================= CREATE POOL CONNECTION =================
 // Pool is better than single connection for real apps
 
-const dbUri = process.env.DATABASE_URL || process.env.MYSQL_URL;
-
-const poolConfig = dbUri
-    ? dbUri
-    : {
-        host: process.env.DB_HOST || process.env.MYSQLHOST || "127.0.0.1",
-        user: process.env.DB_USER || process.env.MYSQLUSER || "root",
-        password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || ""),
-        database: process.env.DB_NAME || process.env.MYSQLDATABASE || "lost_found_db",
-        port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || 3306, 10),
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-        multipleStatements: false
-    };
-
-const pool = mysql.createPool(poolConfig);
-
-async function getMigrationConnection() {
-    if (dbUri) {
-        try {
-            const urlObj = new URL(dbUri);
-            urlObj.searchParams.set("multipleStatements", "true");
-            return await mysql.createConnection(urlObj.toString()).promise();
-        } catch (e) {
-            return await mysql.createConnection(dbUri).promise();
-        }
-    }
-    return await mysql.createConnection({
-        host: process.env.DB_HOST || process.env.MYSQLHOST || "127.0.0.1",
-        user: process.env.DB_USER || process.env.MYSQLUSER || "root",
-        password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || ""),
-        database: process.env.DB_NAME || process.env.MYSQLDATABASE || "lost_found_db",
-        port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || 3306, 10),
-        multipleStatements: true
-    }).promise();
-}
+const pool = mysql.createPool({
+    host: process.env.DB_HOST || process.env.MYSQLHOST || "127.0.0.1",
+    user: process.env.DB_USER || process.env.MYSQLUSER || "root",
+    password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || ""),
+    database: process.env.DB_NAME || process.env.MYSQLDATABASE || "lost_found_db",
+    port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || 3306, 10),
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    multipleStatements: false
+});
 
 
 // ================= PROMISE BASED POOL =================
@@ -79,7 +53,14 @@ async function testDatabaseConnection() {
                 const sqlPath = path.join(__dirname, "../../database/schema.sql");
                 if (fs.existsSync(sqlPath)) {
                     // Use a temporary connection with multipleStatements for schema execution
-                    const migrationConn = await getMigrationConnection();
+                    const migrationConn = await mysql.createConnection({
+                        host: process.env.DB_HOST || process.env.MYSQLHOST || "127.0.0.1",
+                        user: process.env.DB_USER || process.env.MYSQLUSER || "root",
+                        password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || ""),
+                        database: process.env.DB_NAME || process.env.MYSQLDATABASE || "lost_found_db",
+                        port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || 3306, 10),
+                        multipleStatements: true
+                    }).promise();
                     const sql = fs.readFileSync(sqlPath, "utf8");
                     await migrationConn.query(sql);
                     await migrationConn.end();
@@ -573,7 +554,14 @@ async function testDatabaseConnection() {
             if (fs.existsSync(sqlPath)) {
                 console.log("🔄 Initializing database tables from schema.sql...");
                 // Use a temporary connection with multipleStatements for schema execution
-                const migrationConn = await getMigrationConnection();
+                const migrationConn = await mysql.createConnection({
+                    host: process.env.DB_HOST || process.env.MYSQLHOST || "127.0.0.1",
+                    user: process.env.DB_USER || process.env.MYSQLUSER || "root",
+                    password: process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : (process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || ""),
+                    database: process.env.DB_NAME || process.env.MYSQLDATABASE || "lost_found_db",
+                    port: parseInt(process.env.DB_PORT || process.env.MYSQLPORT || 3306, 10),
+                    multipleStatements: true
+                }).promise();
                 let sql = fs.readFileSync(sqlPath, "utf8");
                 // Remove CREATE DATABASE and USE statements to support Railway/Render dynamic databases
                 sql = sql.replace(/CREATE DATABASE[^;]+;/gi, "").replace(/USE [^;]+;/gi, "");

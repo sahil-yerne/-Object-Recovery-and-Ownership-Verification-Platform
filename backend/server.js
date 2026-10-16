@@ -45,16 +45,16 @@ app.use(helmet({
 // CORS configuration
 const ALLOWED_ORIGINS = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(",").map(s => s.trim())
-    : ["*"];
+    : [`http://localhost:${process.env.PORT || 5004}`, "http://127.0.0.1:" + (process.env.PORT || 5004)];
 
 app.use(cors({
     origin: function(origin, callback) {
-        // Allow requests with no origin (same-origin, mobile apps, curl)
+        // Allow requests with no origin (same-origin, Postman, mobile apps)
         if (!origin) return callback(null, true);
-        if (ALLOWED_ORIGINS.includes("*") || ALLOWED_ORIGINS.includes(origin)) {
+        if (ALLOWED_ORIGINS.includes(origin) || ALLOWED_ORIGINS.includes("*")) {
             return callback(null, true);
         }
-        callback(null, true); // Fallback allow to avoid unexpected deployment breaks
+        callback(new Error("Not allowed by CORS"));
     },
     credentials: true
 }));
